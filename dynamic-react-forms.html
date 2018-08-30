@@ -1,0 +1,98 @@
+<div id="output" class="heading" ></div>
+<div id="root" class="content"></div>
+<!-- Load Babel -->
+<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<!-- Your custom script here -->
+<script type="text/babel">
+const getMessage = () => "Make Dynamic Forms with React";
+document.getElementById('output').innerHTML = getMessage();
+class NameForm extends React.Component {
+	state = {error: null};
+    handleSubmit = event => {
+        event.preventDefault();
+        console.log('{target: event.target} = ' + {target: event.target});
+		console.log('event.target[0].value = ' + event.target[0].value);
+		console.log('event.target.elements.username.value = ' + event.target.elements.username.value);
+		console.log('this.usernameInputNode.value = ' + this.usernameInputNode.value);
+    };
+	handleChange = (event) => {
+		const { value } = event.target;
+		this.setState({
+				error: this.props.getErrorMessage(value)
+		})
+	};
+	
+	componentDidMount() {
+		this.setState({
+				error: this.props.getErrorMessage('')
+		});
+	}
+	
+    render() {
+		const { error } = this.state;
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <label>
+                    Name: 
+                    <input type="text" name="username" onChange={this.handleChange} ref={node => this.usernameInputNode = node}/>
+                </label>
+				{ error ? (
+					<div style={{color: 'red', padding: 10,}}>
+						{error}
+					</div>
+					)
+					:
+					null
+				}
+                <button disabled={Boolean(error)} type="submit" >
+                    Submit
+                </button>
+            </form>
+        )
+    }
+}
+
+	function getErrorMessage(value) {
+		if (value.length < 3) {
+			return `Value must be at least 3 characters, but only ${value.length} entered`;
+		}
+		if (!value.includes('s')) {
+			return `Value does not include "s" but it should!`;
+		}
+		return null;
+	}
+
+    ReactDOM.render(
+        <NameForm getErrorMessage={getErrorMessage} />,
+        document.getElementById('root'),
+
+    )
+</script>
+<style>
+	.heading {
+		font-weight: bold;
+		padding: 10px;
+		margin: 10px;
+		display: block;
+		border-style: solid;
+		border-width: 1px;
+		border-color: olive;
+		background-color: linen;
+	}
+	.content {
+		padding: 10px;
+		margin: 10px;
+		display: block;
+		border-style: solid;
+		border-width: 1px;
+		border-radius: 10px;
+		border-color: lightskyblue;
+		background-color: lavender;
+		outline-width: 5px;
+		outline-color: lavenderblush;
+		outline-style: double;
+	}
+	
+</style>

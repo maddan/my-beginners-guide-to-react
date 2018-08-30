@@ -1,0 +1,69 @@
+<div id="output" class="heading" ></div>
+<div id="root" class="content"></div>
+
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+<script type="text/babel">
+
+	const getMessage = () => "Create a Simple Reusable React Component";
+	document.getElementById('output').innerHTML = getMessage();
+	const root_element = document.getElementById('root');
+	const Message = props => <div>{props.msg}</div>;
+	const MessageWithChildren = props => <div {...props}>{props.children}</div>;
+	const messages_element = (
+		<div className="content">
+			<Message msg="Hello World from Message" />
+			<Message msg="Goodbye World from Message" />
+			<MessageWithChildren children="Hello World from MessageWithChildren" />
+			<MessageWithChildren>Goodbye World from MessageWithChildren tag content</MessageWithChildren>
+			<MessageWithChildren children={["Hello World from MessageWithChildren Array element 1 ", "Goodbye World from MessageWithChildren Array Element 2"]} />
+			<MessageWithChildren className="bg-yellow">
+				Hello World from MessageWithChildren outer tag content
+				<MessageWithChildren className="bg-cyan">
+					Hello World from MessageWithChildren inner tag content
+				</MessageWithChildren>
+			</MessageWithChildren>
+		</div>
+	);
+    ReactDOM.render(
+        messages_element,
+        root_element,
+
+    )
+
+</script>
+
+<style>
+	.heading {
+		font-weight: bold;
+		padding: 10px;
+		margin: 10px;
+		display: block;
+		border-style: solid;
+		border-width: 1px;
+		border-color: olive;
+		background-color: linen;
+	}
+	.content {
+		padding: 10px;
+		margin: 10px;
+		display: block;
+		border-style: solid;
+		border-width: 1px;
+		border-radius: 10px;
+		border-color: lightskyblue;
+		background-color: lavender;
+		outline-width: 5px;
+		outline-color: lavenderblush;
+		outline-style: double;
+	}
+	
+	.bg-cyan {
+		background-color: cyan;
+	}
+	.bg-yellow {
+		background-color: yellow;
+	}
+	
+</style>

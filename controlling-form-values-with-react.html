@@ -1,0 +1,157 @@
+<div id="output" class="heading" ></div>
+<div id="root" class="content"></div>
+
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+<script type="text/babel">
+
+	const getMessage = () => "Controlling Form Values  with React";
+	document.getElementById('output').innerHTML = getMessage();
+
+	class MyFancyForm extends React.Component {
+	    static availableOptions = [
+			'apple',
+			'grape',
+			'cherry',
+			'orange',
+			'pear',
+			'peach',
+		];
+		
+		state = {multiline: '', commaSeparated: '', multiselect: []};
+		handleCommaSeparatedChange = (event) => {
+//		    console.log('handleCommaSeparatedChanged');
+//			console.log(event.target.value);
+			const {value} = event.target;
+			const allVals = value.split(',').map(v => v.trim()).filter(v => MyFancyForm.availableOptions.includes(v));
+			this.setState({
+			    commaSeparated: value,
+				multiline: value.split(',').map(v => v.trim()).filter(Boolean).join('\n'),
+				multiselect: allVals
+			});
+		}
+		
+		handleMultilinechange = (event) => {
+//		    console.log('handleMultilinechanged');
+//			console.log(event.target.value);
+			const {value} = event.target;
+			const allVals = value.split('\n').map(v => v.trim()).filter(v => MyFancyForm.availableOptions.includes(v));
+			this.setState({
+			    commaSeparated: value.split('\n').map(v => v.trim()).filter(Boolean).join(','),
+			    multiline: value,
+				multiselect: allVals
+			});
+		}
+		
+		handleMultiSelectChange= (event) => {
+//		    console.log('handleMultiSelectChanged');
+//			console.log(event.target.selectedOptions);
+			const allVals = Array.from(event.target.selectedOptions).map(o => o.value);
+//			console.log(allVals);
+			this.setState({
+			    commaSeparated: allVals.map(v => v.trim()).filter(Boolean).join(','),
+			    multiline: allVals.map(v => v.trim()).filter(Boolean).join('\n'),
+				multiselect: allVals
+			});
+
+		}
+		
+		render() {
+		
+		    const {multiline, commaSeparated, multiselect} = this.state;
+		
+		    return (
+			    <form>
+				    <div>
+					    <label>
+						    comm seperated values:
+							<br/>
+							<input
+							    className={'input'}
+							    type="text"
+								value={commaSeparated}
+								onChange={this.handleCommaSeparatedChange}
+							/>
+						</label>
+					</div>
+				    <div>
+					    <label>
+						    multiline values:
+							<br/>
+							<textarea
+							    className={'textArea'}
+							    value={multiline}
+							    rows={MyFancyForm.availableOptions.length}
+								onChange={this.handleMultilinechange}
+							/>
+						</label>
+					</div>
+				    <div>
+					    <label>
+						    multiselect values:
+							<br/>
+							<select
+							    multiple
+								value={multiselect}
+								size={MyFancyForm.availableOptions.length}
+								onChange={this.handleMultiSelectChange}
+							>
+							    {MyFancyForm.availableOptions.map(opt => {
+							        return (<option
+  	        							       className={'select'}
+							                   key={opt}
+								               value={opt}>{opt}
+									        </option>);
+								})}
+							</select>
+						</label>
+					</div>
+				</form>
+			);
+		}
+		
+    }		
+	
+    ReactDOM.render(
+        <MyFancyForm />,
+        document.getElementById('root'),
+
+    )
+
+</script>
+
+<style>
+	.heading {
+		font-weight: bold;
+		padding: 10px;
+		margin: 10px;
+		display: block;
+		border-style: solid;
+		border-width: 1px;
+		border-color: olive;
+		background-color: linen;
+	}
+	.content {
+		padding: 10px;
+		margin: 10px;
+		display: block;
+		border-style: solid;
+		border-width: 1px;
+		border-radius: 10px;
+		border-color: lightskyblue;
+		background-color: lavender;
+		outline-width: 5px;
+		outline-color: lavenderblush;
+		outline-style: double;
+	}
+	.select {
+	    width: 100px;
+	}
+	.input {
+	    width: 400px;
+	}
+	.textarea {
+	    width: 100px;
+	}
+</style>

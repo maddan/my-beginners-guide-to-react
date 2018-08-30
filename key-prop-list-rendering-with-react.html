@@ -1,0 +1,187 @@
+<div id="output" class="heading" ></div>
+<div id="root" class="content"></div>
+
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+<script type="text/babel">
+
+	const getMessage = () => "Use the key prop when Rendering a List with React";
+	document.getElementById('output').innerHTML = getMessage();
+
+
+	class App extends React.Component {
+	    static allItems = [
+		    {id: 'a', value: 'apple'},
+			{id: 'o', value: 'orange'},
+			{id: 'g', value: 'grape'},
+			{id: 'p', value: 'pear'},
+		];
+		state = {items: []};
+		addItem = () => {
+		    this.setState(({items}) => ({
+			    items: [
+				    ...items,
+					App.allItems.find(
+					    i => !items.includes(i),
+					),
+				],
+			}))
+		}
+		removeItem = (item) => {
+		    this.setState(({items}) => ({
+			    items: items.filter(i => i !== item),
+			}))
+		}
+		render() {
+		    const {items} = this.state;
+
+		    return (
+			    <div className={'app'}>
+				    <button
+					    disabled={items.length >= App.allItems.length}
+						onClick={this.addItem}
+					>
+					    +
+					</button>
+					{items.map((i, index) => (
+					    <div key={i.id}>
+						    <button onClick={() => this.removeItem(i)}>
+							    -
+							</button>
+							{i.value}:
+							<input />
+						</div>
+					))}
+				</div>
+			);
+		}
+	}
+
+	class FocusDemo extends React.Component {
+	    static allItems = [
+		    {id: 'a', value: 'apple'},
+			{id: 'o', value: 'orange'},
+			{id: 'g', value: 'grape'},
+			{id: 'p', value: 'pear'},
+		];
+		state = {items: []};
+		handleChange = (event) => {
+			console.log(event.target.value);
+		}
+		render() {
+		    const {items} = this.state;
+
+
+		    return (
+			    <div className={'focus-demo'}>
+					<h6> Keyed by Index</h6>
+					<div>
+					{items.map((i, index) => (
+							<div key={index}>
+								<input type='text' value={i.value} onChange={this.handleChange} />
+							</div>
+					))}
+					</div>
+					<h6> Keyed by Item</h6>
+					<div>
+					{items.map((i, index) => (
+							<div key={i}>
+								<input type='text' value={i.value} onChange={this.handleChange} />
+							</div>
+					))}
+					</div>
+					<h6> Keyed by Id</h6>
+					<div>
+					{items.map((i, index) => (
+							<div key={i.id}>
+								<input type='text' value={i.value} onChange={this.handleChange} />
+							</div>
+					))}
+					</div>
+				</div>
+			);
+		}
+
+		componentDidMount() {
+			this.setState({
+				items: FocusDemo.allItems.sort( () => Math.random() - 0.5),
+				});
+		    setInterval(() => {
+				this.setState({
+					items: FocusDemo.allItems.sort( () => Math.random() - 0.5),
+				});
+			}, 1000);
+		}
+
+	}
+
+	const content = (
+		<div>
+		    <div className={'section'}>
+			<h5>List Demo</h5>
+	        <App />
+			</div>
+		    <hr/>
+		    <div className={'section'}>
+			    <h5>Focus Demo</h5>
+				<FocusDemo />
+			</div>
+		</div>
+	);
+    ReactDOM.render(
+        content,
+        document.getElementById('root'),
+
+    )
+
+</script>
+
+<style>
+	.heading {
+		font-weight: bold;
+		padding: 10px;
+		margin: 10px;
+		display: block;
+		border-style: solid;
+		border-width: 1px;
+		border-color: olive;
+		background-color: linen;
+	}
+	.content {
+		padding: 10px;
+		margin: 10px;
+		display: block;
+		border-style: solid;
+		border-width: 1px;
+		border-radius: 10px;
+		border-color: lightskyblue;
+		background-color: lavender;
+		outline-width: 5px;
+		outline-color: lavenderblush;
+		outline-style: double;
+	}
+
+	.section {
+		padding: 5px;
+		margin: 5px;
+		display: block;
+		border-style: solid;
+		border-width: 1px;
+		border-radius: 5px;
+		border-color: LightCyan;
+		background-color: lavender;
+		outline-width: 5px;
+		outline-color: LightSlateGray;
+		outline-style: double;
+	}
+	.app {
+	    height: 160px;
+	}
+	.focus-demo {
+		background-color: LightYellow;
+		text-align: center;
+		margin: 5px;
+	}
+
+</style>
