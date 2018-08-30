@@ -9,8 +9,11 @@
 	const getMessage = () => "Hello World, ReactJs";
 	document.getElementById('output').innerHTML = getMessage();
 
-	const hello_element = <div> Hello World from ReactJS</div>;
-	
+	const hello_element_text = 'Hello World from ReactJS';
+	const hello_content_class = 'hello-content';
+	const hello_element = <div className={hello_content_class}>{hello_element_text}</div>;
+	console.log('hello_element');
+	console.log(hello_element);
     ReactDOM.render(
         hello_element,
         document.getElementById('root'),
@@ -43,5 +46,7 @@
 		outline-color: lavenderblush;
 		outline-style: double;
 	}
-	
+	.hello-content {
+		color: blueviolet;
+	}
 </style>
