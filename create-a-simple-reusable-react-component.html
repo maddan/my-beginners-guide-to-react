@@ -10,7 +10,7 @@
 	document.getElementById('output').innerHTML = getMessage();
 	const root_element = document.getElementById('root');
 	const Message = props => <div>{props.msg}</div>;
-	const MessageWithChildren = props => <div {...props}>{props.children}</div>;
+	const MessageWithChildren = props => <div {...props} className="bg-red" >{props.children}</div>;
 	const messages_element = (
 		<div className="content">
 			<Message msg="Hello World from Message" />
@@ -65,5 +65,7 @@
 	.bg-yellow {
 		background-color: yellow;
 	}
-	
+	.bg-red {
+		background-color: red;
+	}
 </style>
